@@ -8,6 +8,7 @@ const jobSchema = new mongoose.Schema({
     notes: { type: String, default: '' },
     location: { type: String, default: '' },
     workArrangement: { type: String, enum: ['remote', 'on-site', 'hybrid'], default: 'remote' },
+    link: { type: String, default: '' },
     type: { type: String, enum: ['full-time', 'part-time', 'contract', 'internship'], default: 'full-time' },
     salaryType: { type: String, enum: ['hourly', 'monthly', 'yearly'], default: 'yearly' },
     salary: { type: Number, default: 0 }

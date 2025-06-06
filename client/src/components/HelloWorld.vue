@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import apiClient from '../api/axios'; // make sure this is configured with baseURL
 
 const jobs = ref([]);
-console.log("testing")
 const fetchJobs = async () => {
   try {
     const response = await apiClient.get('/getJobs');
@@ -20,6 +19,7 @@ fetchJobs();
 <template>
   <div>
     <h1>Jobs</h1>
+    <button @click="fetchJobs">Load Jobs</button>
     <ul v-if="jobs.length">
       <li v-for="job in jobs" :key="job._id">
         {{ job.role }} at {{ job.company }}
