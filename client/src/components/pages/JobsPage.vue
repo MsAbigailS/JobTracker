@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import apiClient from '../../api/axios.ts'
-import ProjectList from '../lists/ProjectList.vue'
-import AddProjectCard from '../cards/AddProjectCard.vue'
+import JobList from '../lists/JobList.vue'
+import AddJobCard from '../cards/AddJobCard.vue'
+import { scrollToTop, scrollTo } from '../../utilities/helpers.ts'
 
 const showAddCard = ref(false)
+const addJobCard = ref<HTMLElement | null>(null)
 const jobs = ref([])
 const fetchJobs = async(api: string) => {
     try {
@@ -23,13 +25,14 @@ fetchJobs('getJobs')
 <template>
     <div id="jobs-page" class="m-3 p-3">
         <h2>Jobs</h2>
-        <ProjectList :projects="jobs"/>
+        <JobList :jobs="jobs"/>
         <div v-if="!showAddCard">
-            <button type="button" class="btn btn-primary" @click="showAddCard= true">+ job</button>
+            <button type="button" class="btn btn-primary" @click="showAddCard = true">+ job</button>
         </div>
-        <div v-if="showAddCard">
-            <AddProjectCard/>
-            <!-- <button class="btn btn-primary" @click="showAddCard=false">save</button> -->
-        </div>
+        <transition name="fade" mode="out-in" :duration="1000">
+            <div v-if="showAddCard" ref="addJobCard">
+                <AddJobCard @job-added="fetchJobs('getJobs'); showAddCard = false; scrollToTop()" @cancel-job-add="showAddCard = false; scrollToTop()"/>
+            </div>
+        </transition>
     </div>
 </template>

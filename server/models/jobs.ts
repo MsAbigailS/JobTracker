@@ -31,7 +31,8 @@ const jobSchema = new mongoose.Schema({
     workArrangement: {
         type: String,
         enum: ['remote', 'on-site', 'hybrid'],
-        default: 'remote'
+        default: 'remote',
+        required: true
     },
     link: {
         type: String,
@@ -40,16 +41,19 @@ const jobSchema = new mongoose.Schema({
     type: {
         type: String,
         enum: ['full-time', 'part-time', 'contract', 'internship'],
-        default: 'full-time'
+        default: 'full-time',
+        required: true
     },
     salaryType: {
         type: String,
         enum: ['hourly', 'monthly', 'yearly'],
-        default: 'yearly'
+        default: 'yearly',
+        required: true
     },
     salary: {
         type: Number,
-        default: 0
+        default: 0,
+        required: true
     }
 });
 
