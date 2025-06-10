@@ -14,3 +14,11 @@ This project utilizes:
 * MongoDB with Mongoose
 * Vite + Vue + Bootstrap
 * axios
+
+Currently it is possible to:
+* create records
+* edit records
+* expand records
+
+![](assets/Buildlog_JobTracker_06_09_2025_Desktop_Video.gif)
+![](assets/Buildlog_JobTracker_06_09_2025_Mobile_Video.gif)
