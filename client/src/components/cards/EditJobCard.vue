@@ -38,15 +38,17 @@ const dummyValidation: Ref<Record<string, boolean>> = ref({
 })
 
 const fields = [
-  { label: 'company' as keyof Jobs },
-  { label: 'dateApplied' as keyof Jobs },
-  { label: 'notes' as keyof Jobs},
-  { label: 'location' as keyof Jobs },
-  { label: 'workArrangement' as keyof Jobs },
-  { label: 'link' as keyof Jobs },
-  { label: 'salaryType' as keyof Jobs},
-  { label: 'type' as keyof Jobs },
-  { label: 'salary' as keyof Jobs}
+    { label: 'role' as keyof Jobs},
+    { label: 'company' as keyof Jobs },
+    { label: 'status' as keyof Jobs},
+    { label: 'dateApplied' as keyof Jobs },
+    { label: 'notes' as keyof Jobs},
+    { label: 'location' as keyof Jobs },
+    { label: 'workArrangement' as keyof Jobs },
+    { label: 'link' as keyof Jobs },
+    { label: 'salaryType' as keyof Jobs},
+    { label: 'type' as keyof Jobs },
+    { label: 'salary' as keyof Jobs}
 ]
 
 const emit = defineEmits(['job-updated'])
@@ -78,7 +80,6 @@ async function updateJob() {
       <div class="job-card-full border p-4 mt-3 mb-3 rounded shadow-sm bg-white">
         <div id="header" class="card-title d-flex flex-column justify-content-between">
             <h2>{{ job?.role }}</h2>
-            <div>{{ job?.status }}</div>
         </div>
 
     <div id="body" class="card-body">
@@ -125,7 +126,7 @@ async function updateJob() {
                                 }"   
                                 name="radioGroupWorkArrangement" 
                                 type="radio" 
-                                :value="upper(item)"
+                                :value="dummyJob[fields.label as keyof Jobs]"
                                 checked
                             >
                             <label>{{ upper(item) }}</label>
@@ -140,7 +141,43 @@ async function updateJob() {
                                 }"   
                                 name="radioGroupWorkArrangement" 
                                 type="radio" 
-                                :value="upper(item)"
+                                :value="dummyJob[fields.label as keyof Jobs]"
+                            >
+                            <label>{{ upper(item) }}</label>
+                        </div>
+                    </div>
+                </div>   
+        </div>
+
+        <div v-else-if="fields.label === 'status'">
+                <div class="form-check">
+                    <div v-for="item in status">
+                        <div v-if="item == dummyJob.status">
+                            <input 
+                                @input="dummyValidation[fields.label] = validateInput(fields.label, dummyJob[fields.label])" 
+                                @blur="dummyValidation[fields.label] = validateInput(fields.label, dummyJob[fields.label])"
+                                :class="{
+                                    'form-check-input is-valid': dummyValidation[fields.label] === true,
+                                    'form-check-input is-invalid': dummyValidation[fields.label] === false
+                                }"   
+                                name="radioGroupStatus" 
+                                type="radio" 
+                                :value="dummyJob[fields.label as keyof Jobs]"
+                                checked
+                            >
+                            <label>{{ upper(item) }}</label>
+                        </div>
+                        <div v-else>
+                            <input 
+                                @input="dummyValidation[fields.label] = validateInput(fields.label, dummyJob[fields.label])" 
+                                @blur="dummyValidation[fields.label] = validateInput(fields.label, dummyJob[fields.label])"
+                                :class="{
+                                    'form-check-input is-valid': dummyValidation[fields.label] === true,
+                                    'form-check-input is-invalid': dummyValidation[fields.label] === false
+                                }"   
+                                name="radioGroupStatus" 
+                                type="radio" 
+                                :value="dummyJob[fields.label as keyof Jobs]"
                             >
                             <label>{{ upper(item) }}</label>
                         </div>

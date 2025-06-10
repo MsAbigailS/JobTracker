@@ -66,7 +66,7 @@ export const updateJob = async (req: Request, res: Response): Promise<void> => {
             res.status(500).json({ message: "Job not found" })
         }
 
-        res.status(201).json(updatedJob);
+        res.status(201).json('successfulUpdate');
     } catch (err) {
         console.log("ERROR: Unable to update job record.", err)
         res.status(500).json({ message: "Internal Server Error" })
