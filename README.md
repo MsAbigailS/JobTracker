@@ -4,6 +4,8 @@ Welcome to my Job Tracker!
 
 Inspired by my own struggles at keeping my job applications organized, I decided to create my own job tracker.
 
+![Status](https://img.shields.io/badge/status-in--progress-yellow)
+
 **[View my progress](https://msabigails.github.io/)**
 
 Inspiration:
