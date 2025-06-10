@@ -5,6 +5,10 @@ import { upper, dateToString, abbrevSalaryType, numberToMoney } from '../../util
 const props = defineProps < {
   job?: Jobs
 }>()
+
+const emit = defineEmits<{
+  (e: 'show-full-job-card', id: string): void
+}>()
     
 const fields = [
   { label: 'company' as keyof Jobs },
@@ -20,13 +24,13 @@ const fields = [
 </script>
 
 <template>
-  <div class="job-card border p-3 mt-3 mb-3 rounded shadow-sm">
+  <div @click="emit('show-full-job-card', job?._id || '')" class="job-card border p-3 mt-3 mb-3 rounded shadow-sm">
     <div id="header" class="card-title d-flex flex-row justify-content-between">
       <h2>{{ job?.role }}</h2>
       <div>{{ job?.status }}</div>
     </div>
 
-    <div id="body" class="card-body hover:shadow-lg hover:bg-success-subtle">
+    <div id="body" class="card-body">
       <div v-for="(fields) in fields">
         <div v-if="job?.[fields.label as keyof Jobs]" class="card-row d-flex flex-row align-items-center border-bottom p-2"> <!-- ensuring only rows with values shown-->
           <div style="width:40%">{{ upper(fields.label ?? '') }}</div>
@@ -38,3 +42,10 @@ const fields = [
     </div>
   </div>
 </template>
+
+<style>
+.job-card:hover{
+  border-color: rgba(49, 210, 242,0.4) !important;
+  cursor: pointer;
+}
+</style>

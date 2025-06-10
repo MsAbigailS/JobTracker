@@ -7,6 +7,15 @@ const props = defineProps<{
     jobs: Jobs[]
 }>()
 
+console.log(props.jobs)
+
+const emit = defineEmits<{
+  (e: 'show-full-job-card', id: string): void
+}>()
+
+function bubble(id: string) {
+    emit('show-full-job-card',id)
+}
 
 console.log("ProjectList props", props)
 </script>
@@ -14,11 +23,11 @@ console.log("ProjectList props", props)
 <template>
     <div id="project-list">
         <span class="d-block d-lg-none ">
-            <JobCard v-for="job in jobs" :job="job" />
+            <JobCard v-for="job in jobs" :job="job" @show-full-job-card="bubble"/>
         </span>
 
         <span class="d-none d-lg-block">
-            <JobTable :jobs="jobs"/>
+            <JobTable :jobs="jobs" @show-full-job-card="bubble"/>
         </span>
     </div>
 </template>

@@ -1,4 +1,5 @@
 export interface Jobs {
+    _id: string;
     role: string;
     company: string;
     dateApplied: string;

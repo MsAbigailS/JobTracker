@@ -46,3 +46,29 @@ export const getJobs = async (req: Request, res: Response): Promise<void> => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
+
+export const updateJob = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params
+        const updateFields = req.body
+
+        const updatedJob = await Job.findByIdAndUpdate(
+            id,
+            { $set: updateFields },
+            {
+                new: true,
+                runValidators: true
+            }
+        )
+
+        if (!updatedJob) {
+            console.log("ERROR: Could not find job to update")
+            res.status(500).json({ message: "Job not found" })
+        }
+
+        res.status(201).json(updatedJob);
+    } catch (err) {
+        console.log("ERROR: Unable to update job record.", err)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}

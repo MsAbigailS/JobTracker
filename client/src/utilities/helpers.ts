@@ -22,7 +22,6 @@ export function scrollToTop() {
 }
 
 export function scrollTo(num: number) {
-    console.log("scrolling to:", num)
     window.scrollTo({ top: num, behavior: 'smooth' })
 }
 
@@ -34,10 +33,9 @@ export function numberToMoney(number: number | string | null) {
 }
 
 export function validateInput(key: string, input: string | number) {
-    console.log("VALIDATING:", key, ":", input)
     const now = new Date();
-    console.log(now)
-    if ((key === 'role' || key === 'company' || key === 'salary') && !(typeof input === 'string' && input.length > 0)) { return false }
+    if ((key === 'role' || key === 'company') && !(typeof input === 'string' && input.length > 0)) { return false }
+    if ((key) === 'salary' && (typeof input === 'string' && (!/^[0-9]+$/.test(input)))) { return false }
     if ((key === 'dateApplied') && !(typeof input === 'string' && +(input.substring(0, 4)) >= +(now.getFullYear()) && +(input.substring(5, 7)) <= +(now.getMonth()) + 1 && +(input.substring(8, 10)) <= +(now.getDate()))) { return false }
     return true
 }
