@@ -126,7 +126,8 @@ async function updateJob() {
                                 }"   
                                 name="radioGroupWorkArrangement" 
                                 type="radio" 
-                                :value="dummyJob[fields.label as keyof Jobs]"
+                                v-model="dummyJob[fields.label as keyof Jobs]" 
+                                :value="item"
                                 checked
                             >
                             <label>{{ upper(item) }}</label>
@@ -141,7 +142,8 @@ async function updateJob() {
                                 }"   
                                 name="radioGroupWorkArrangement" 
                                 type="radio" 
-                                :value="dummyJob[fields.label as keyof Jobs]"
+                                v-model="dummyJob[fields.label as keyof Jobs]" 
+                                :value="item"
                             >
                             <label>{{ upper(item) }}</label>
                         </div>
@@ -162,7 +164,8 @@ async function updateJob() {
                                 }"   
                                 name="radioGroupStatus" 
                                 type="radio" 
-                                :value="dummyJob[fields.label as keyof Jobs]"
+                                v-model="dummyJob[fields.label as keyof Jobs]" 
+                                :value="item"
                                 checked
                             >
                             <label>{{ upper(item) }}</label>
@@ -177,7 +180,8 @@ async function updateJob() {
                                 }"   
                                 name="radioGroupStatus" 
                                 type="radio" 
-                                :value="dummyJob[fields.label as keyof Jobs]"
+                                v-model="dummyJob[fields.label as keyof Jobs]" 
+                                :value="item"
                             >
                             <label>{{ upper(item) }}</label>
                         </div>
@@ -198,7 +202,8 @@ async function updateJob() {
                             }"   
                             name="radioGroupWorkType" 
                             type="radio" 
-                            :value="upper(item)"
+                            v-model="dummyJob[fields.label as keyof Jobs]" 
+                            :value="item"
                             checked
                         >
                         <label>{{ upper(item) }}</label>
@@ -213,7 +218,8 @@ async function updateJob() {
                             }"   
                             name="radioGroupWorkType" 
                             type="radio" 
-                            :value="upper(item)"
+                            v-model="dummyJob[fields.label as keyof Jobs]" 
+                            :value="item"
                         >
                         <label>{{ upper(item) }}</label>
                     </div>
@@ -234,7 +240,8 @@ async function updateJob() {
                             }"   
                             name="radioGroupSalaryType" 
                             type="radio" 
-                            :value="upper(item)"
+                            v-model="dummyJob[fields.label as keyof Jobs]" 
+                            :value="item"
                             checked
                         >
                         <label>{{ upper(item) }}</label>
@@ -249,7 +256,8 @@ async function updateJob() {
                             }"   
                             name="radioGroupSalaryType" 
                             type="radio" 
-                            :value="upper(item)"
+                            v-model="dummyJob[fields.label as keyof Jobs]" 
+                            :value="item"
                         >
                         <label>{{ upper(item) }}</label>
                     </div>
