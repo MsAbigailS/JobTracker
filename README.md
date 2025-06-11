@@ -6,7 +6,7 @@ Inspired by my own struggles at keeping my job applications organized, I decided
 
 ![Status](https://img.shields.io/badge/status-in--progress-yellow)
 
-**[View my progress](https://msabigails.github.io/)**
+**[View my progress](https://msabigails.github.io/projects/Job-Application-Tracker/buildlog)**
 
 Inspiration:
 Spreadsheets and note-based apps couldn't give me the flexibility I needed to effectively keep track of my job applications, so I decided to make my own job tracker.
@@ -22,5 +22,5 @@ Currently it is possible to:
 * edit records
 * expand records
 
-![](assets/Buildlog_JobTracker_06_09_2025_Desktop_Video.gif)
-![](assets/Buildlog_JobTracker_06_09_2025_Mobile_Video.gif)
+![](assets/Buildlog_JobTracker_06_10_2025_Desktop_Video.gif)
+![](assets/Buildlog_JobTracker_06_10_2025_Mobile_Video.gif)
