@@ -69,13 +69,22 @@ async function updateJob() {
 
     if (update) {
         try {
-            console.log(dummyJob.value._id)
             await apiClient.patch('updateJob/' + dummyJob.value._id, dummyJob.value)
             emit('job-updated')
-            console.log("SUCCESS: Updated job")
+            console.log("SUCCESS: Updated job.")
         } catch (err) {
             console.log("ERROR: Could not update job",err)
         }
+    }
+}
+
+async function deleteJob() {
+    try {
+        await apiClient.patch('deleteJob/' + dummyJob.value._id)
+        emit('job-updated')
+        console.log("SUCCESS: Deleted job.")
+    } catch(err) {
+        console.log("ERROR: Could not delete job.", err)
     }
 }
 
@@ -172,6 +181,7 @@ function resetDate() {
             <div class="d-flex flex-row">
                 <button @click="updateJob" class="btn btn-primary m-3">save</button>
                 <button @click="emit('job-updated')" class="btn btn-danger m-3">cancel</button>
+                <button @click="deleteJob" class="btn btn-secondary m-3">delete</button>
             </div>
         </div>
 

@@ -154,10 +154,10 @@ function setSelection(selected: string, key: string) {
             <div v-else-if="key === 'dateApplied'">
                 {{ upper(key) }}
                 <DatePicker 
-                        mode="add"
-                        @date-selected="(textInput) => setText(textInput, key)"
-                        @date-rejected="resetText(key)"    
-                    />
+                    mode="add"
+                    @date-selected="(textInput) => setText(textInput, key)"
+                    @date-rejected="resetText(key)"    
+                />
             </div>
             <div v-else-if="key === 'salary'">
                 {{ upper(key) }}
@@ -186,8 +186,7 @@ function setSelection(selected: string, key: string) {
             </div>
             <button @click="pushJob" class="btn btn-primary m-3">save</button>
             <button @click="emit('cancel-job-add')" class="btn btn-danger m-3">cancel</button>
-            <button @click="console.log(dummyValidation); console.log(dummyJob)" class="btn btn-danger m-3">test</button>
-
+            <button @click="console.log(dummyValidation)">test</button>
         </div>
     </div>
 </template>
