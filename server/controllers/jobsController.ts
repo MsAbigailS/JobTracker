@@ -72,3 +72,21 @@ export const updateJob = async (req: Request, res: Response): Promise<void> => {
         res.status(500).json({ message: "Internal Server Error" })
     }
 }
+
+export const deleteJob = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params
+
+        const deletedJob = await Job.findByIdAndDelete(id)
+
+        if (!deletedJob) {
+            console.log("ERROR: Could not delete document.")
+            res.status(500).json({ message: "Job not deleted." })
+        }
+
+        res.status(201).json("successfulDelete")
+    } catch (err) {
+        console.log("ERROR: Unable to delete document.")
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
