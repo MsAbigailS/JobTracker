@@ -2,6 +2,8 @@
 import { ref, type Ref } from 'vue'
 import { salaryType, type Jobs, status, workArrangement, workType } from '../../../../server/types/Jobs.ts'
 import { upper, dateToString, numberToMoney, abbrevSalaryType } from '../../utilities/helpers'
+import JobTags from '../tags/JobTags.vue'
+
 const props = defineProps < {
   job?: Jobs
 }>()
@@ -43,7 +45,9 @@ const emit = defineEmits<{
         <div id="header" class="card-title d-flex flex-row justify-content-between">
             <div>
                 <h2>{{ job?.role }}</h2>
-                <div>{{ job?.status }}</div>
+                <div class="d-flex">
+                    <JobTags :status="job?.status ?? ''"/>
+                </div>
             </div>
             <div>
                 <button @click="emit('close-modal')" class="btn close-btn" aria-label="Close modal">&times;</button>
@@ -76,20 +80,3 @@ const emit = defineEmits<{
         </button>
     </div>
 </template>
-
-<style>
-.job-card-full {
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  width: 100%;
-  max-height: 80vh;
-  overflow-y: auto;
-  padding: 1.5rem;
-  box-sizing: border-box;
-}
-</style>

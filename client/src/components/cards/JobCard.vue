@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Jobs } from '../../../../server/types/Jobs.ts'
 import { upper, dateToString, abbrevSalaryType, numberToMoney } from '../../utilities/helpers.ts'
+import JobTags from '../tags/JobTags.vue'
 
 const props = defineProps < {
   job?: Jobs
@@ -27,7 +28,8 @@ const fields = [
   <div @click="emit('show-full-job-card', job?._id || '')" class="job-card border p-3 mt-3 mb-3 rounded shadow-sm">
     <div id="header" class="card-title d-flex flex-row justify-content-between">
       <h2>{{ job?.role }}</h2>
-      <div>{{ job?.status }}</div>
+      <!-- <div>{{ job?.status }}</div> -->
+       <JobTags :status="job?.status ?? ''"/>
     </div>
 
     <div id="body" class="card-body">

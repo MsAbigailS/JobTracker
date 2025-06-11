@@ -32,10 +32,36 @@ export function numberToMoney(number: number | string | null) {
     return number
 }
 
-export function validateInput(key: string, input: string | number) {
-    const now = new Date();
-    if ((key === 'role' || key === 'company') && !(typeof input === 'string' && input.length > 0)) { return false }
-    if ((key) === 'salary' && (typeof input === 'string' && (!/^[0-9]+$/.test(input)))) { return false }
-    if ((key === 'dateApplied') && !(typeof input === 'string' && +(input.substring(0, 4)) >= +(now.getFullYear()) && +(input.substring(5, 7)) <= +(now.getMonth()) + 1 && +(input.substring(8, 10)) <= +(now.getDate()))) { return false }
-    return true
+export function validateInputDate(input: string) {
+    const today = new Date()
+    const date = new Date(input)
+    return date <= today
+}
+
+export function validateInputText(input: string) {
+    return input.length > 0
+}
+
+export function validateNumberTextInput(input: string) {
+    console.log(typeof input === 'string' && (/^[0-9]+$/.test(input)))
+    return (typeof input === 'string' && (/^[0-9]+$/.test(input)))
+}
+
+// removes any - from input
+export function formatEnum(input: string) {
+    const split = input.split("-")
+
+    if (split.length <= 1) {
+        console.log("WARNING: No need to format enum.")
+        return input
+    }
+
+    let formatted = split[0]
+    split[0] = ''
+
+    split.forEach((word) => {
+        formatted += word.substring(0, 1).toUpperCase() + word.substring(1, word.length)
+    })
+
+    return formatted
 }
