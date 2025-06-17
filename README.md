@@ -20,7 +20,10 @@ This project utilizes:
 Currently it is possible to:
 * create records
 * edit records
+* delete records
 * expand records
+* create custom fields
+* edit custom fields
 
 ![](assets/Buildlog_JobTracker_06_10_2025_Desktop_Video.gif)
 ![](assets/Buildlog_JobTracker_06_10_2025_Mobile_Video.gif)
