@@ -54,6 +54,12 @@ const jobSchema = new mongoose.Schema({
         type: Number,
         default: 0,
         required: true
+    },
+    customFields: {
+        type: Map,
+        of: mongoose.Schema.Types.Mixed,
+        default: {},
+        required: false
     }
 });
 

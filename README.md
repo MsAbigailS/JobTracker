@@ -21,6 +21,13 @@ Currently it is possible to:
 * create records
 * edit records
 * expand records
+* delete records
+* create custom fields
+* edit custom fields
 
-![](assets/Buildlog_JobTracker_06_10_2025_Desktop_Video.gif)
-![](assets/Buildlog_JobTracker_06_10_2025_Mobile_Video.gif)
+Updating existing custom field on job application:
+![](assets/CustomFields_06_17_2025_Desktop_Video.gif)
+Adding custom field to new job application:
+![](assets/CustomFields_Add_06_17_2025_Desktop_Video.gif)
+Creating custom field on existing job application:
+![](assets/CustomFields_Edit_06_17_2025_Desktop_Video.gif)

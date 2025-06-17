@@ -248,7 +248,7 @@ function addCustomField(newCustomField: CustomFields) {
 
 
         <div class="d-flex flex-row">
-            <button @click="console.log(jobApplication)" class="btn btn-primary m-3">test</button>
+            <!-- <button @click="console.log(jobApplication)" class="btn btn-primary m-3">test</button> -->
 
             <button @click="updateJob" class="btn btn-primary m-3">save</button>
             <button @click="emit('job-updated')" class="btn btn-danger m-3">cancel</button>

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 export interface Jobs {
     _id: string;
     role: string;
@@ -11,6 +12,18 @@ export interface Jobs {
     type: workType;
     salaryType: salaryType;
     salary: string;
+    customFields: {
+        type: Map<string, CustomFields>,
+        of: mongoose.Schema.Types.Mixed,
+        default: {}
+    }
+}
+
+export interface CustomFields {
+    key: string,
+    type: 'text' | 'radio' | 'date' | 'number',
+    options: string[] | null,
+    content: string // value (radio will have selected value)
 }
 
 export enum workArrangement {

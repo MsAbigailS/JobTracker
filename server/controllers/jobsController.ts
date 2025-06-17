@@ -13,7 +13,8 @@ export const createJob = async (req: Request, res: Response): Promise<void> => {
             workArrangement,
             type,
             salaryType,
-            salary
+            salary,
+            customFields
         } = req.body;
         const job = new Job(
             {
@@ -26,7 +27,8 @@ export const createJob = async (req: Request, res: Response): Promise<void> => {
                 workArrangement,
                 type,
                 salaryType,
-                salary
+                salary,
+                customFields
             }
         );
         await job.save();
