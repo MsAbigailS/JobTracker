@@ -2,17 +2,20 @@
 import { ref, type Ref } from 'vue'
 import { upper } from '../../utilities/helpers.ts'
 import * as JobFields from '../../../../server/types/Jobs.ts'
+import type { CustomFields } from '../../../../server/types/Jobs.ts'
 import apiClient from '../../api/axios.ts'
 import DatePicker from '../inputs/job/DatePicker.vue'
 import Text from '../inputs/job/Text.vue'
 import Number from '../inputs/job/Number.vue'
 import Radio from '../inputs/job/Radio.vue'
+import Custom from '../inputs/custom/Custom.vue'
+
 
 const props = defineProps<{
     job: JobFields.Jobs
 }>();
 
-const dummyJob: Ref<JobFields.Jobs> = ref({
+const jobApplication: Ref<Omit<JobFields.Jobs, 'customFields'> & { customFields: Record<string, any> }> = ref({
     _id: props.job._id ?? '',
     role: props.job.role ?? '',
     company: props.job.company ?? '',
@@ -24,10 +27,11 @@ const dummyJob: Ref<JobFields.Jobs> = ref({
     link: props.job.link ?? '',
     type: props.job.type ?? JobFields.workType.contract,
     salaryType: props.job.salaryType ?? JobFields.salaryType.hourly,
-    salary: props.job.salary ?? ''
+    salary: props.job.salary ?? '',
+    customFields: props.job.customFields ?? null
 })
 
-const dummyValidation: Ref<Record<string, boolean>> = ref({
+const jobApplicationValidation: Ref<Record<string, boolean | Record<string, boolean>>> = ref({
     role: true,
     company: true,
     dateApplied: true,
@@ -38,7 +42,8 @@ const dummyValidation: Ref<Record<string, boolean>> = ref({
     link: true, //optional
     type: true,
     salaryType: true,
-    salary: true
+    salary: true,
+    customFields: true
 })
 
 const fields = [
@@ -52,35 +57,39 @@ const fields = [
     { label: 'link' as keyof JobFields.Jobs },
     { label: 'salaryType' as keyof JobFields.Jobs},
     { label: 'type' as keyof JobFields.Jobs },
-    { label: 'salary' as keyof JobFields.Jobs}
+    { label: 'salary' as keyof JobFields.Jobs },
+    { label: 'customFields' as keyof JobFields.Jobs}
 ]
 
 const emit = defineEmits(['job-updated'])
+const creatingCustomFields = ref(false)
 
 async function updateJob() {
     let update = true
-    Object.values(dummyValidation.value).forEach(validation => {
+    Object.values(jobApplicationValidation.value).forEach(validation => {
         if (validation === false) {
-            console.log("ERROR: Cannot push job, invalid field provided.", dummyValidation)
+            console.log("ERROR: Cannot push job, invalid field provided.", jobApplicationValidation)
             update = false
             return
         }
     });
 
     if (update) {
-        try {
-            await apiClient.patch('updateJob/' + dummyJob.value._id, dummyJob.value)
-            emit('job-updated')
-            console.log("SUCCESS: Updated job.")
-        } catch (err) {
-            console.log("ERROR: Could not update job",err)
-        }
+        console.log(jobApplication)
+        // try {
+        //     await apiClient.patch('updateJob/' + jobApplication.value._id, jobApplication.value)
+        //     emit('job-updated')
+        //     console.log(jobApplication)
+        //     console.log("SUCCESS: Updated job.")
+        // } catch (err) {
+        //     console.log("ERROR: Could not update job",err)
+        // }
     }
 }
 
 async function deleteJob() {
     try {
-        await apiClient.patch('deleteJob/' + dummyJob.value._id)
+        await apiClient.patch('deleteJob/' + jobApplication.value._id)
         emit('job-updated')
         console.log("SUCCESS: Deleted job.")
     } catch(err) {
@@ -90,8 +99,8 @@ async function deleteJob() {
 
 function setDate(date: string) {
     if (typeof date === 'string') {
-        dummyJob.value.dateApplied = date
-        dummyValidation.value.dateApplied = true
+        jobApplication.value.dateApplied = date
+        jobApplicationValidation.value.dateApplied = true
     } else {
         console.log('ERROR: Invalide date provided')
     }
@@ -107,40 +116,43 @@ function keyExists(key: string): boolean{
     return false
 }
 
+const customFieldRef = ref()
+
 function setText(text: string, key: string) {
-    if (!keyExists) {
-        console.log("ERROR: Cannot update job due to invalid key:", key)
-    } else {
-        (dummyJob.value as any)[key] = text;
-        (dummyValidation as any)[key] = true;
-        console.log("SUCCESS: Updated dummyJob (key,val):", key, (dummyJob.value as any)[key])      
-    }
+    console.log("setting text:", key, ":", text);
+    (jobApplication.value as any)[key] = text;
+    jobApplicationValidation.value[key] = true;
 }
 
 function setSelection(selected: string, key: string) {
-    if (!keyExists) {
-        console.log("ERROR: Cannot update job due to invalid key:", key)
-    } else {
-        (dummyJob.value as any)[key] = selected;
-        (dummyValidation as any)[key] = true;
-        console.log("SUCCESS: Updated dummyJob (key,val):", key, (dummyJob.value as any)[key])    
-    }
+    console.log("setting text:", key, ":", selected);
+    (jobApplication.value as any)[key] = selected;
+    jobApplicationValidation.value[key] = true;
+
 }
 
 function resetText(key: string) {
-    if (!keyExists) {
-        console.log("ERROR: Cannot update job due to invalid key:", key)
-    } else {
-        (dummyJob.value as any)[key] = (props.job as any)[key];
-        (dummyValidation as any)[key] = true;
-        console.log("SUCCESS: Reset dummyJob (key,val):", key, (dummyJob.value as any)[key])    
-    }
+    console.log("setting text:", key);
+    (jobApplication.value as any)[key] = '';
+    jobApplicationValidation.value[key] = false;
+
+}
+function resetDate() {
+    jobApplication.value.dateApplied = ''
+    jobApplicationValidation.value.dateApplied = false
+    console.log(jobApplicationValidation)
 }
 
-function resetDate() {
-    dummyJob.value.dateApplied = ''
-    dummyValidation.value.dateApplied = false
-    console.log(dummyValidation)
+// utilizing key from newCustomField as key in jobApplication
+function addCustomField(newCustomField: CustomFields) {
+    jobApplication.value.customFields[newCustomField.key] = {
+        key: newCustomField.key,
+        type: newCustomField.type,
+        content: newCustomField.content,
+        options: newCustomField.options
+    }
+
+    customFieldRef.value?.resetCustomField()
 }
 
 </script>
@@ -162,8 +174,10 @@ function resetDate() {
                     <DatePicker 
                         mode="edit"
                         :date="job.dateApplied.substring(0,10)"
+                        :allowFuture="false"
                         @date-selected="setDate"
                         @date-rejected="resetDate"    
+
                     />
                 </div>
                 <div v-else-if="field.label === 'status' || field.label === 'workArrangement' || field.label === 'salaryType'">
@@ -172,19 +186,60 @@ function resetDate() {
                 <div v-else-if="field.label === 'type'">
                     <Radio :input="job[field.label]" :name="field.label" :structure="JobFields.workType" :items="JobFields.workType" @radio-selected="(selectedItem) => setSelection(selectedItem, field.label)"/>
                 </div>
+                <div v-else-if="field.label === 'customFields'">
+                    <div  v-for="customField in Object.values(job.customFields as Record<string, any>)">
+                        {{ customField.key }}
+                        <div v-if="customField.type === 'text'">
+                            <Text :input="customField.content" :required="true" mode="edit" @text-provided="(textInput) => setText(textInput, field.label)" @text-rejected="resetText(field.label)"/>
+                        </div>
+                        <div v-else-if="customField.type === 'number'">
+                            $<Number mode="edit" :input="customField.content" @text-number-provided="(textInput) => setText(textInput, field.label)" @text-number-rejected="resetText(field.label)"/>
+                        </div>
+                        <div v-else-if="customField.type === 'date'">
+                            <DatePicker 
+                                mode="edit"
+                                :date="customField.content.substring(0,10)"
+                                :allowFuture="true"
+                                @date-selected="setDate"
+                                @date-rejected="resetDate"  
+                            />                        
+                        </div>
+                        <div v-else-if="customField.type === 'radio'">
+                            <Radio :input="customField.content" :name="customField.key" :structure="customField.content" :items="customField.options" @radio-selected="(selectedItem) => setSelection(selectedItem, field.label)"/>
+                        </div>
+                    </div>
+                </div>
                 <div v-else>
-                    <Text :input="job[field.label]" mode="edit" @text-provided="(textInput) => setText(textInput, field.label)" @text-rejected="resetText(field.label)"/>
+                    <Text :input="job[field.label]" :required="true" mode="edit" @text-provided="(textInput) => setText(textInput, field.label)" @text-rejected="resetText(field.label)"/>
                 </div>
             </div>
 
 
-            <div class="d-flex flex-row">
-                <button @click="updateJob" class="btn btn-primary m-3">save</button>
-                <button @click="emit('job-updated')" class="btn btn-danger m-3">cancel</button>
-                <button @click="deleteJob" class="btn btn-secondary m-3">delete</button>
-            </div>
+        <!-- triggering allowing for custom fields -->
+        <button class="btn btn-primary m-3" @click="creatingCustomFields = true">+ field</button>
+
+        <!-- creating custom fields -->
+        <div
+            id="custom-fields"
+            v-if="creatingCustomFields"
+        >
+            <Custom 
+                ref="customFieldRef" 
+                @custom-field="(newCustomField) => addCustomField(newCustomField)"
+            />
         </div>
 
+
+        <div class="d-flex flex-row">
+            <button @click="console.log(jobApplication)" class="btn btn-primary m-3">test</button>
+
+            <button @click="updateJob" class="btn btn-primary m-3">save</button>
+            <button @click="emit('job-updated')" class="btn btn-danger m-3">cancel</button>
+            <button @click="deleteJob" class="btn btn-secondary m-3">delete</button>
+        </div>
+    </div>
+
+        
     </div>
 </template>
 

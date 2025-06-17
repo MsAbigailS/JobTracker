@@ -7,8 +7,6 @@ const props = defineProps<{
     jobs: Jobs[]
 }>()
 
-console.log(props.jobs)
-
 const emit = defineEmits<{
   (e: 'show-full-job-card', id: string): void
 }>()
@@ -16,8 +14,6 @@ const emit = defineEmits<{
 function bubble(id: string) {
     emit('show-full-job-card',id)
 }
-
-console.log("ProjectList props", props)
 </script>
 
 <template>

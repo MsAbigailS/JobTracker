@@ -5,7 +5,7 @@ import Input from '../Input.vue'
 
 const props = defineProps<{
     input?: string // provided will be placeholder
-    required?: boolean
+    required: boolean
     mode: 'edit' | 'add'
 }>()
 
@@ -20,8 +20,12 @@ const emit = defineEmits<{
     (e: 'text-rejected'):void
 }>()
 
-function validate(textInput: string):boolean{
-    return validation.value = validateInputText(textInput)
+function validate(textInput: string): boolean{
+    if (!props.required) {
+        return true
+    } else {
+        return validation.value = validateInputText(textInput)
+    }
 }
 
 function bubble(textInput: string, validated: boolean){

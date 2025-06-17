@@ -7,6 +7,7 @@ import Input from '../Input.vue'
 const props = defineProps<{
     date?: string
     mode: 'edit' | 'add'
+    allowFuture?: boolean
 }>()
 
 const validation = ref(true)
@@ -19,12 +20,17 @@ const emit = defineEmits<{
 
 function validate(){
     if (typeof selectedDate.value === 'string') {
-        validation.value = validateInputDate(selectedDate.value)
-        if(validation.value){
-            emit('date-selected', selectedDate.value)
+        console.log("Date allow future:", props.allowFuture)
+        if(!props.allowFuture){
+            validation.value = validateInputDate(selectedDate.value)
+            if(validation.value){
+                emit('date-selected', selectedDate.value)
+            } else {
+                emit('date-rejected')
+                console.log('ERROR: Unable to validate date input.')
+            }
         } else {
-            emit('date-rejected')
-            console.log('ERROR: Unable to validate date input.')
+            emit('date-selected', selectedDate.value)
         }
     } else {
         emit('date-rejected')

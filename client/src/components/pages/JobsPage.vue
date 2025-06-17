@@ -19,7 +19,7 @@ const jobs = ref<Jobs[]>([])
 const fetchJobs = async(api: string) => {
     try {
         const response = await apiClient.get('/'+api);
-        console.log("SUCCESS: Fetched jobs", response)
+        console.log("SUCCESS: Fetched jobs")
         jobs.value = response.data;
     } catch(error){
         console.log("ERROR: Could not load jobs.", error);

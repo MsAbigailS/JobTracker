@@ -18,7 +18,7 @@ const emit = defineEmits<{
 }>()
 
 function handleBlur(){
-    if (props.validate) {
+    if (props.validate && props.required == true) {
         if(props.validate(value.value)){
             // placeholder.value = '' // causes placeholder to render empty
             emit('text-provided', value.value as string)

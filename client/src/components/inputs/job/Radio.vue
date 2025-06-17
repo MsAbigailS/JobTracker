@@ -6,7 +6,7 @@ const props = defineProps<{
     input?: string
     required?: boolean
     name?:string
-    items?: {}
+    items?: {} | string[]
     structure?: any
 }>()
 
@@ -25,7 +25,7 @@ if(!props.name){
 <template>
 
     <div v-for="(label, key) in items" :key="key">
-        <div v-if="formatEnum(input ?? '') === key">
+        <div class="mt-1" v-if="formatEnum(input ?? '') === key || formatEnum(input ?? '') === label">
             <input 
                 type="radio"
                 :name="name ?? nameDefault"
@@ -33,16 +33,16 @@ if(!props.name){
                 @change="emit('radio-selected',label)"
                 checked
             />
-            <label>{{label}}</label>
+            <label class="p-1">{{label}}</label>
         </div>
-        <div v-else>
+        <div class="mt-1" v-else>
             <input 
                 type="radio"
                 :name="name ?? nameDefault"
                 :value="label"
                 @change="emit('radio-selected',label)"
             />
-            <label>{{label}}</label>
+            <label class="p-1">{{label}}</label>
         </div>
     </div>
     

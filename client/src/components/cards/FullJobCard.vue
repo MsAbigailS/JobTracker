@@ -60,14 +60,25 @@ const emit = defineEmits<{
                     <div style="width:40%">{{ upper(fields.label ?? '') }}</div>
                     <div v-if="fields.label == 'dateApplied'" style="width:60%" >
                         
-                            {{ dateToString(job?.[fields.label as keyof Jobs] ?? '') }}
+                            {{ typeof job?.[fields.label as keyof Jobs] === 'string' ? dateToString(job?.[fields.label as keyof Jobs] as string) : '' }}
                         
                     </div>
-                    <div v-else-if="fields.label == 'salary'" style="width:60%" class="form-control-plaintext">${{ numberToMoney(job?.[fields.label as keyof Jobs]) }}/{{ abbrevSalaryType(job?.salaryType ?? '') }}</div>
+                    <div v-else-if="fields.label == 'salary'" style="width:60%" class="form-control-plaintext">
+                        ${{ (typeof job?.[fields.label as keyof Jobs] === 'number' || typeof job?.[fields.label as keyof Jobs] === 'string') 
+                            ? numberToMoney(job?.[fields.label as keyof Jobs] as string | number) 
+                            : '' }}/{{ typeof job?.salaryType === 'string' ? abbrevSalaryType(job.salaryType) : '' }}
+                    </div>
                     <div v-else style="width:60%" class="form-control-plaintext">
                             {{ job?.[fields.label as keyof Jobs] }}
                             
                     </div>
+                </div>
+            </div>
+
+            <div v-for="(value, key) in job?.customFields" class="card-row d-flex flex-row align-items-center border-bottom p-2">
+                <div style="width:40%" class="form-control-plaintext">{{ upper(key ?? '') }}</div>
+                <div style="width:60%" class="form-control-plaintext">
+                    {{ value && typeof value === 'object' && 'content' in value ? value.content : '' }}
                 </div>
             </div>
         </div>
