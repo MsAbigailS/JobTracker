@@ -76,14 +76,14 @@ async function updateJob() {
 
     if (update) {
         console.log(jobApplication)
-        // try {
-        //     await apiClient.patch('updateJob/' + jobApplication.value._id, jobApplication.value)
-        //     emit('job-updated')
-        //     console.log(jobApplication)
-        //     console.log("SUCCESS: Updated job.")
-        // } catch (err) {
-        //     console.log("ERROR: Could not update job",err)
-        // }
+        try {
+            await apiClient.patch('updateJob/' + jobApplication.value._id, jobApplication.value)
+            emit('job-updated')
+            console.log(jobApplication)
+            console.log("SUCCESS: Updated job.")
+        } catch (err) {
+            console.log("ERROR: Could not update job",err)
+        }
     }
 }
 
@@ -116,12 +116,29 @@ function keyExists(key: string): boolean{
     return false
 }
 
+function isCustomField(key: string): boolean{
+    let flag = false;
+    (Object.values(jobApplication.value.customFields) as any[]).forEach((customField: any) => {
+        if (customField.key === key) {
+            console.log("key found")
+            flag = true
+            
+        }
+    })
+
+    return flag
+}
+
 const customFieldRef = ref()
 
 function setText(text: string, key: string) {
     console.log("setting text:", key, ":", text);
-    (jobApplication.value as any)[key] = text;
-    jobApplicationValidation.value[key] = true;
+    if (isCustomField(key)) {
+        jobApplication.value.customFields[key].content = text
+    } else {
+        (jobApplication.value as any)[key] = text;
+        jobApplicationValidation.value[key] = true;
+    }
 }
 
 function setSelection(selected: string, key: string) {
@@ -190,10 +207,10 @@ function addCustomField(newCustomField: CustomFields) {
                     <div  v-for="customField in Object.values(job.customFields as Record<string, any>)">
                         {{ customField.key }}
                         <div v-if="customField.type === 'text'">
-                            <Text :input="customField.content" :required="true" mode="edit" @text-provided="(textInput) => setText(textInput, field.label)" @text-rejected="resetText(field.label)"/>
+                            <Text :input="customField.content" :required="true" mode="edit" @text-provided="(textInput) => setText(textInput, customField.key)" @text-rejected="resetText(customField.key)"/>
                         </div>
                         <div v-else-if="customField.type === 'number'">
-                            $<Number mode="edit" :input="customField.content" @text-number-provided="(textInput) => setText(textInput, field.label)" @text-number-rejected="resetText(field.label)"/>
+                            $<Number mode="edit" :input="customField.content" @text-number-provided="(textInput) => setText(textInput, customField.key)" @text-number-rejected="resetText(customField.key)"/>
                         </div>
                         <div v-else-if="customField.type === 'date'">
                             <DatePicker 
@@ -205,7 +222,7 @@ function addCustomField(newCustomField: CustomFields) {
                             />                        
                         </div>
                         <div v-else-if="customField.type === 'radio'">
-                            <Radio :input="customField.content" :name="customField.key" :structure="customField.content" :items="customField.options" @radio-selected="(selectedItem) => setSelection(selectedItem, field.label)"/>
+                            <Radio :input="customField.content" :name="customField.key" :structure="customField.content" :items="customField.options" @radio-selected="(selectedItem) => setSelection(selectedItem, customField.key)"/>
                         </div>
                     </div>
                 </div>
