@@ -20,6 +20,7 @@ This project utilizes:
 Currently it is possible to:
 * create records
 * edit records
+* delete records
 * expand records
 * delete records
 * create custom fields
